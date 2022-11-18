@@ -4,17 +4,13 @@ import {BigSidebar, SmallSidebar, Navbar} from "../../components";
 import Wrapper from "../../assets/wrappers/SharedLayout";
 
 const SharedLayout = () => {
-  const [isSidebarOpen, setisSidebarOpen] = useState(false);
-  const toggleSidebar = () => {
-    setisSidebarOpen(!isSidebarOpen);
-  };
   return (
     <Wrapper>
       <main className="dashboard">
         <SmallSidebar />
         <BigSidebar />
         <div>
-          <Navbar toggleSidebar={toggleSidebar} />
+          <Navbar />
           <div className="dashboard-page">
             <Outlet />
           </div>
