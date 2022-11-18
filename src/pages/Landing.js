@@ -21,7 +21,7 @@ const Landing = () => {
             quibusdam odio vitae, aliquid in, soluta enim ex est tenetur.
             Laboriosam!
           </p>
-          <Link to="/register" class="btn btn-hero">
+          <Link to="/register" className="btn btn-hero">
             Login / Register
           </Link>
         </div>
