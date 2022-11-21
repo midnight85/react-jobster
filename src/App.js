@@ -3,6 +3,7 @@ import {Landing, Error, Register, ProtectedRoute} from "./pages";
 import {ToastContainer} from "react-toastify";
 import {Profile, AddJob, AllJobs, Stats, SharedLayout} from "./pages/dashboard";
 import "react-toastify/dist/ReactToastify.css";
+
 function App() {
   return (
     <BrowserRouter>
