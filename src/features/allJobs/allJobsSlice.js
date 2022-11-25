@@ -1,6 +1,7 @@
 import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
 import {toast} from "react-toastify";
 import customFetch from "../../utils/axios";
+import {logoutUser} from "../user/userSlice";
 
 const initialFilterState = {
   search: "",
@@ -24,7 +25,12 @@ const initialState = {
 export const getAllJobs = createAsyncThunk(
   "/allJobsSlice/getAllJobs",
   async (_, thunkAPI) => {
-    let url = "/jobs";
+    const {page, search, searchStatus, searchType, sort} =
+      thunkAPI.getState().allJobs;
+    let url = `/jobs?status=${searchStatus}&jobType=${searchType}&sort=${sort}&page=${page}`;
+    if (search) {
+      url = url + `&search=${search}`;
+    }
     try {
       const resp = await customFetch.get(url, {
         headers: {
@@ -33,6 +39,10 @@ export const getAllJobs = createAsyncThunk(
       });
       return resp.data;
     } catch (error) {
+      if (error.response.status === 401) {
+        thunkAPI.dispatch(logoutUser());
+        return thunkAPI.rejectWithValue("Unauthorized! Logging Out...");
+      }
       return thunkAPI.rejectWithValue(error.responce.data.msg);
     }
   }
@@ -48,6 +58,17 @@ const allJobsSlice = createSlice({
     hideLoading: (state) => {
       state.isLoading = false;
     },
+    handleChange: (state, {payload: {name, value}}) => {
+      state.page = 1;
+      state[name] = value;
+    },
+    clearFilters: (state) => {
+      return {...state, ...initialState};
+    },
+    changePage: (state, {payload}) => {
+      state.page = payload;
+    },
+    clearAllJobState: () => initialState,
   },
   extraReducers: {
     [getAllJobs.pending]: (state) => {
@@ -56,6 +77,8 @@ const allJobsSlice = createSlice({
     [getAllJobs.fulfilled]: (state, {payload}) => {
       state.isLoading = false;
       state.jobs = payload.jobs;
+      state.numOfPages = payload.numOfPages;
+      state.totalJobs = payload.totalJobs;
     },
     [getAllJobs.rejected]: (state, {payload}) => {
       state.isLoading = false;
@@ -63,5 +86,12 @@ const allJobsSlice = createSlice({
     },
   },
 });
-export const {showLoading, hideLoading} = allJobsSlice.actions;
+export const {
+  showLoading,
+  hideLoading,
+  handleChange,
+  clearFilters,
+  changePage,
+  clearAllJobState,
+} = allJobsSlice.actions;
 export default allJobsSlice.reducer;

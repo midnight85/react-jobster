@@ -1,4 +1,4 @@
-import styled from 'styled-components'
+import styled from "styled-components";
 
 const Wrapper = styled.section`
   height: 6rem;
@@ -9,11 +9,12 @@ const Wrapper = styled.section`
   flex-wrap: wrap;
   gap: 1rem;
   .btn-container {
-    background: var(--primary-100);
+    /* background: var(--primary-100); */
     border-radius: var(--borderRadius);
   }
   .pageBtn {
-    background: transparent;
+    /* background: transparent; */
+    background: var(--primary-100);
     border-color: transparent;
     width: 50px;
     height: 40px;
@@ -23,6 +24,9 @@ const Wrapper = styled.section`
     transition: var(--transition);
     border-radius: var(--borderRadius);
     cursor: pointer;
+    &:not(:last-child) {
+      margin-right: 1rem;
+    }
   }
   .active {
     background: var(--primary-500);
@@ -50,5 +54,5 @@ const Wrapper = styled.section`
     background: var(--primary-500);
     color: var(--white);
   }
-`
-export default Wrapper
+`;
+export default Wrapper;

@@ -4,13 +4,24 @@ import Wrapper from "../assets/wrappers/JobsContainer";
 import {getAllJobs} from "../features/allJobs/allJobsSlice";
 import Job from "./Job";
 import Loading from "./Loading";
+import PageBtnContainer from "./PageBtnContainer";
 
 const JobsContainer = () => {
   const dispatch = useDispatch();
-  const {jobs, isLoading} = useSelector((store) => store.allJobs);
+  const {
+    jobs,
+    isLoading,
+    page,
+    totalJobs,
+    numOfPages,
+    search,
+    searchStatus,
+    searchType,
+    sort,
+  } = useSelector((store) => store.allJobs);
   useEffect(() => {
     dispatch(getAllJobs());
-  }, []);
+  }, [page, search, searchStatus, searchType, sort]);
 
   if (isLoading) {
     return <Loading />;
@@ -24,12 +35,16 @@ const JobsContainer = () => {
   }
   return (
     <Wrapper>
-      <h5>jobs info</h5>
+      <h5>
+        {totalJobs} job{jobs.length > 1 && "s"} found
+      </h5>
+      {numOfPages > 1 && <PageBtnContainer />}
       <div className="jobs">
         {jobs.map((job) => {
           return <Job key={job._id} {...job} />;
         })}
       </div>
+      {numOfPages > 1 && <PageBtnContainer />}
     </Wrapper>
   );
 };
