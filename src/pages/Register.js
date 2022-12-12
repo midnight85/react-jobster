@@ -10,7 +10,7 @@ const initialState = {
   name: "",
   email: "",
   password: "",
-  isMember: false,
+  isMember: true,
 };
 
 const Register = () => {
@@ -82,6 +82,18 @@ const Register = () => {
         />
         <button disabled={isLoading} type="submit" className="btn btn-block">
           {isLoading ? "Loading..." : "submit"}
+        </button>
+        <button
+          disabled={isLoading}
+          type="button"
+          onClick={() => {
+            dispatch(
+              loginUser({email: "testUser@test.com", password: "secret"})
+            );
+          }}
+          className="btn btn-block btn-hipster"
+        >
+          {isLoading ? "Loading..." : "Demo app"}
         </button>
         <p>
           {values.isMember ? "Not a member yet?" : "Already have an account?"}

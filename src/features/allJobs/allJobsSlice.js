@@ -1,5 +1,6 @@
 import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
 import {toast} from "react-toastify";
+import authHeader from "../../utils/authHeader";
 import customFetch from "../../utils/axios";
 import {logoutUser} from "../user/userSlice";
 
@@ -32,18 +33,14 @@ export const getAllJobs = createAsyncThunk(
       url = url + `&search=${search}`;
     }
     try {
-      const resp = await customFetch.get(url, {
-        headers: {
-          authorization: `Bearer ${thunkAPI.getState().user.user.token}`,
-        },
-      });
+      const resp = await customFetch.get(url, authHeader(thunkAPI));
       return resp.data;
     } catch (error) {
       if (error.response.status === 401) {
         thunkAPI.dispatch(logoutUser());
         return thunkAPI.rejectWithValue("Unauthorized! Logging Out...");
       }
-      return thunkAPI.rejectWithValue(error.responce.data.msg);
+      return thunkAPI.rejectWithValue(error.response.data.msg);
     }
   }
 );

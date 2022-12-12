@@ -1,6 +1,7 @@
 import {createSlice, createAsyncThunk} from "@reduxjs/toolkit";
 import axios from "axios";
 import {toast} from "react-toastify";
+import authHeader from "../../utils/authHeader";
 import customFetch from "../../utils/axios";
 import {
   addUserToLocalStorage,
@@ -41,18 +42,18 @@ export const updateUser = createAsyncThunk(
   "user/updateUser",
   async (user, thunkAPI) => {
     try {
-      const resp = await customFetch.patch("/auth/updateUser", user, {
-        headers: {
-          authorization: `Bearer ${thunkAPI.getState().user.user.token}`,
-        },
-      });
+      const resp = await customFetch.patch(
+        "/auth/updateUser",
+        user,
+        authHeader(thunkAPI)
+      );
       return resp.data;
     } catch (error) {
       if (error.response.status === 401) {
         thunkAPI.dispatch(clearStore());
         return thunkAPI.rejectWithValue("Unauthorized! Logging Out...");
       }
-
+      console.log(error.response);
       return thunkAPI.rejectWithValue(error.response.data.msg);
     }
   }
