@@ -27,7 +27,7 @@ export const createJob = createAsyncThunk(
       thunkAPI.dispatch(clearValues());
       return resp.data;
     } catch (error) {
-      checkUnauthorizedResponse(error, thunkAPI);
+      return checkUnauthorizedResponse(error, thunkAPI);
     }
   }
 );
@@ -45,7 +45,7 @@ export const deleteJob = createAsyncThunk(
       return resp.data.msg;
     } catch (error) {
       thunkAPI.dispatch(hideLoading());
-      checkUnauthorizedResponse(error, thunkAPI);
+      return checkUnauthorizedResponse(error, thunkAPI);
     }
   }
 );
@@ -63,8 +63,7 @@ export const editJob = createAsyncThunk(
 
       return resp.data;
     } catch (error) {
-            checkUnauthorizedResponse(error, thunkAPI);
-
+      return checkUnauthorizedResponse(error, thunkAPI);
     }
   }
 );

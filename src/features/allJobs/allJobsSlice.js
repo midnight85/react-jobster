@@ -34,7 +34,7 @@ export const getAllJobs = createAsyncThunk(
       const resp = await customFetch.get(url, authHeader(thunkAPI));
       return resp.data;
     } catch (error) {
-      checkUnauthorizedResponse(error, thunkAPI);
+      return checkUnauthorizedResponse(error, thunkAPI);
     }
   }
 );
@@ -46,7 +46,7 @@ export const getStats = createAsyncThunk(
       const resp = await customFetch.get("/jobs/stats", authHeader(thunkAPI));
       return resp.data;
     } catch (error) {
-      checkUnauthorizedResponse(error, thunkAPI);
+      return checkUnauthorizedResponse(error, thunkAPI);
     }
   }
 );

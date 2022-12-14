@@ -22,7 +22,7 @@ export const registerUser = createAsyncThunk(
       const resp = await customFetch.post("/auth/register", user);
       return resp.data;
     } catch (error) {
-      return thunkAPI.rejectWithValue(error.response.data.msg);
+      return checkUnauthorizedResponse(error, thunkAPI);
     }
   }
 );
@@ -34,7 +34,7 @@ export const loginUser = createAsyncThunk(
       const resp = await customFetch.post("/auth/login", user);
       return resp.data;
     } catch (error) {
-      return thunkAPI.rejectWithValue(error.response.data.msg);
+      return checkUnauthorizedResponse(error, thunkAPI);
     }
   }
 );
@@ -49,7 +49,7 @@ export const updateUser = createAsyncThunk(
       );
       return resp.data;
     } catch (error) {
-      checkUnauthorizedResponse(error, thunkAPI);
+      return checkUnauthorizedResponse(error, thunkAPI);
     }
   }
 );
