@@ -2,7 +2,7 @@ import {createSlice, createAsyncThunk} from "@reduxjs/toolkit";
 import axios from "axios";
 import {toast} from "react-toastify";
 import authHeader from "../../utils/authHeader";
-import customFetch from "../../utils/axios";
+import customFetch, {checkUnauthorizedResponse} from "../../utils/axios";
 import {
   addUserToLocalStorage,
   getUserFromLocalStorage,
@@ -49,20 +49,15 @@ export const updateUser = createAsyncThunk(
       );
       return resp.data;
     } catch (error) {
-      if (error.response.status === 401) {
-        thunkAPI.dispatch(clearStore());
-        return thunkAPI.rejectWithValue("Unauthorized! Logging Out...");
-      }
-      console.log(error.response);
-      return thunkAPI.rejectWithValue(error.response.data.msg);
+      checkUnauthorizedResponse(error, thunkAPI);
     }
   }
 );
 export const clearStore = createAsyncThunk(
   "user/clearStore",
-  async (_, thunkAPI) => {
+  async (message, thunkAPI) => {
     try {
-      thunkAPI.dispatch(logoutUser());
+      thunkAPI.dispatch(logoutUser(message));
       thunkAPI.dispatch(clearAllJobState());
       return Promise.resolve();
     } catch (error) {
