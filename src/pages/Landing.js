@@ -16,10 +16,8 @@ const Landing = () => {
             job <span>tracking</span> app
           </h1>
           <p>
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Sapiente
-            consectetur vero quidem explicabo a ut nam veritatis officiis vel,
-            quibusdam odio vitae, aliquid in, soluta enim ex est tenetur.
-            Laboriosam!
+            Add vacancies you have applied for, set their status and track the
+            statistics of submitted, accepted and rejected applications.
           </p>
           <Link to="/register" className="btn btn-hero">
             Login / Register
